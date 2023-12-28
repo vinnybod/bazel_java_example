@@ -1,0 +1,36 @@
+load("@contrib_rules_jvm//java:defs.bzl", "java_junit5_test", "java_library", "java_test")
+load("@apple_rules_lint//lint:defs.bzl", "package_lint_config")
+load("@contrib_rules_jvm//java:defs.bzl", "checkstyle_binary", "checkstyle_config")
+load("//:checkstyle.bzl", "checkstyle_config_wrapped")
+
+checkstyle_binary(
+    name = "checkstyle_bin",
+    visibility = ["//visibility:public"],
+    runtime_deps = ["@maven//:com_puppycrawl_tools_checkstyle"],
+)
+
+# This works
+#checkstyle_config(
+#    name = "my_checkstyle_config",
+#    checkstyle_binary = ":checkstyle_bin",
+#    config_file = "checkstyle.xml",
+#    visibility = ["//visibility:public"],
+#)
+
+# This doesn't
+checkstyle_config_wrapped(
+    name = "my_checkstyle_config",
+    checkstyle_binary = ":checkstyle_bin",
+    checkstyle_xml = "checkstyle.xml",
+)
+
+package_lint_config({
+    "java-checkstyle": "//:my_checkstyle_config",
+})
+
+java_library(
+    name = "entrypoint",
+    srcs = ["src/main/java/com/example/EntryPoint.java"],
+    data = glob(["src/main/resources/**"]),
+    resources = glob(["src/main/resources/**"]),
+)
