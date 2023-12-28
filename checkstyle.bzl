@@ -1,5 +1,8 @@
 load("@contrib_rules_jvm//java:defs.bzl", "checkstyle_config")
 
+# This is a minimal example of generating a checkstyle config.
+# All it does is copy the checkstyle config from the source tree to the
+# output directory and then try to generate a checkstyle_config with it.
 def checkstyle_config_wrapped(
         name,
         checkstyle_binary,
