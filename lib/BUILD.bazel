@@ -5,7 +5,7 @@ java_export(
     srcs = ["src/main/java/com/example/Library.java"],
     maven_coordinates = "com.example.vinnybod:library:0.0.1",
     resources = glob(["src/main/resources/**"]) + [
-        #        "//:COPYRIGHT",
+        "//:COPYRIGHT",
         #        "//:LICENSE",
     ],
     visibility = ["//visibility:public"],
