@@ -1,37 +1,79 @@
-## Bazel Java Example - resources not appearing in `-project.jar` file
+## Bazel Java Example - service file license gets jumbled
 
 ## Background
 
-This is an example of an issue that occurs when trying to add the same file to every `java_export` jar such as a `LICENSE` file.
-The example is two java exports - a "library" (`lib`) and an "app" (`app`) that depends on the library.
-
-The library has a `COPYRIGHT` file that is added as a resource.
-The app depends on the library and has a `COPYRIGHT` and a `LICENSE` file that is added as a resource.
+This is an example of an issue that occurs when a service file contains a license (or any comments). The comments get
+sorted just like the rest of the file, which can cause issues when the order of the comments is important, such as in a license.
 
 ## Reproduction
 
 First build the repo using `bazel build //...`
 
-For the library, we can observe that the `liblib-lib.jar` and the `lib-project.jar` contain the `COPYRIGHT` file as expected.
+View the contents of `app-project.jar`'s `META-INF/services/com.example.ThingProvider` file. You will see that the comments are sorted.
 
-![](images/lib-screenshot.png)
+Original File:
+```
+ # Licensed to the Apache Software Foundation (ASF) under one or more
+ # contributor license agreements. See the NOTICE file distributed with
+ # this work for additional information regarding copyright ownership.
+ # The ASF licenses this file to You under the Apache License, Version 2.0
+ # (the "License"); you may not use this file except in compliance with
+ # the License. You may obtain a copy of the License at
+ #
+ #    http://www.apache.org/licenses/LICENSE-2.0
+ #
+ # Unless required by applicable law or agreed to in writing, software
+ # distributed under the License is distributed on an "AS IS" BASIS,
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+com.example.ThingProviderImpl
 
-For the app, we can observe that the `libapp-lib.jar` contains the `COPYRIGHT` and `LICENSE` files as expected.
-However, the `app-project.jar` only contains the `LICENSE` file and not the `COPYRIGHT` file.
+```
 
-![](images/app-screenshot.png)
+File in `app-project.jar`:
+```
+ #
+ #    http://www.apache.org/licenses/LICENSE-2.0
+ # (the "License"); you may not use this file except in compliance with
+ # Licensed to the Apache Software Foundation (ASF) under one or more
+ # See the License for the specific language governing permissions and
+ # The ASF licenses this file to You under the Apache License, Version 2.0
+ # Unless required by applicable law or agreed to in writing, software
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # contributor license agreements. See the NOTICE file distributed with
+ # distributed under the License is distributed on an "AS IS" BASIS,
+ # limitations under the License.
+ # the License. You may obtain a copy of the License at
+ # this work for additional information regarding copyright ownership.
+com.example.ThingProviderImpl
+```
 
-We can also observe that when `COPYRIGHT` is removed from `//lib:lib` as a resource, it will appear in the `app-project.jar` file, 
-suggesting that the issue is due to the same file being added to both jars.
+## Possible Solution
 
-![](images/comment.png)
-![](images/expected.png)
+I built a potential solution for this at https://github.com/confluentinc/rules_jvm_external/commit/4c249d084f24aee09a8a9980787a8467a8094395
 
-## Swapping configurations
+To test this, replace the `http_archive` for `rules_jvm_external` with the commented `git_repository` for `rules_jvm_external` in `WORKSPACE.bazel`. 
+Then uncomment `prepend_services` in `app/BUILD.bazel` and rebuild the repo using `bazel build //...`
 
-I have also tested with two other configurations:
+After this, you'll be able to observe that the resulting `META-INF/services/com.example.ThingProvider` file in `app-project.jar` is as expected:
 
-Having `//app:app` depend on `//lib:lib-lib` instead of `//lib:lib`. The results were the same.
+```
+ # Licensed to the Apache Software Foundation (ASF) under one or more
+ # contributor license agreements. See the NOTICE file distributed with
+ # this work for additional information regarding copyright ownership.
+ # The ASF licenses this file to You under the Apache License, Version 2.0
+ # (the "License"); you may not use this file except in compliance with
+ # the License. You may obtain a copy of the License at
+ #
+ #    http://www.apache.org/licenses/LICENSE-2.0
+ #
+ # Unless required by applicable law or agreed to in writing, software
+ # distributed under the License is distributed on an "AS IS" BASIS,
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
 
-Swapping `//lib:lib` for a `java_library` rule instead of a `java_export` rule. This actually did fix the problem, 
-leading me to believe this might be a bug in `rules_jvm_external` since `java_export` is expected to be a drop-in replacement for `java_library`.
+com.example.ThingProviderImpl
+
+```
