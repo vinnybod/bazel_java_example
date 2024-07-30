@@ -15,7 +15,7 @@ RULES_JVM_EXTERNAL_SHA = "808cb5c30b5f70d12a2a745a29edc46728fd35fa195c1762a596b6
 
 git_repository(
     name = "rules_jvm_external",
-    commit = "b974432ca658deb0df4c689568c6fd430ed53137",
+    commit = "11705c39f595cc2d8bc8994f4fda5cb45fd5f81a",
     remote = "https://github.com/vinnybod/rules_jvm_external.git",
 )
 
