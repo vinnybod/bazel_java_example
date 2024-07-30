@@ -1,10 +1,11 @@
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-RULES_JVM_EXTERNAL_TAG = "6.0"
+RULES_JVM_EXTERNAL_TAG = "6.2"
 
-RULES_JVM_EXTERNAL_SHA = "85fd6bad58ac76cc3a27c8e051e4255ff9ccd8c92ba879670d195622e7c0a9b7"
+RULES_JVM_EXTERNAL_SHA = "808cb5c30b5f70d12a2a745a29edc46728fd35fa195c1762a596b63ae9cebe05"
 
+#
 #http_archive(
 #    name = "rules_jvm_external",
 #    sha256 = RULES_JVM_EXTERNAL_SHA,
@@ -14,8 +15,8 @@ RULES_JVM_EXTERNAL_SHA = "85fd6bad58ac76cc3a27c8e051e4255ff9ccd8c92ba879670d1956
 
 git_repository(
     name = "rules_jvm_external",
-    commit = "4c249d084f24aee09a8a9980787a8467a8094395",
-    remote = "https://github.com/confluentinc/rules_jvm_external.git",
+    commit = "b974432ca658deb0df4c689568c6fd430ed53137",
+    remote = "https://github.com/vinnybod/rules_jvm_external.git",
 )
 
 load("@rules_jvm_external//:repositories.bzl", "rules_jvm_external_deps")
@@ -25,6 +26,8 @@ rules_jvm_external_deps()
 load("@rules_jvm_external//:setup.bzl", "rules_jvm_external_setup")
 
 rules_jvm_external_setup()
+
+rules_jvm_external_deps()
 
 http_archive(
     name = "contrib_rules_jvm",
@@ -51,14 +54,14 @@ load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 maven_install(
     artifacts = [
-        "com.puppycrawl.tools:checkstyle:8.36.2",
-        "org.junit.jupiter:junit-jupiter-api:5.10.0",
-        "org.junit.jupiter:junit-jupiter-engine:5.10.0",
-        "org.junit.platform:junit-platform-launcher:1.10.0",
-        "org.junit.platform:junit-platform-reporting:1.10.0",
-        "org.junit.vintage:junit-vintage-engine:5.10.0",
+        "io.netty:netty-tcnative-boringssl-static:2.0.61.Final",
     ],
+    maven_install_json = "@//:maven_install.json",
     repositories = [
         "https://repo.maven.apache.org/maven2/",
     ],
 )
+
+load("@maven//:defs.bzl", "pinned_maven_install")
+
+pinned_maven_install()

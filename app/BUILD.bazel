@@ -1,16 +1,24 @@
-load("@contrib_rules_jvm//java:defs.bzl", "java_export", "java_library")
+load("@contrib_rules_jvm//java:defs.bzl", "java_export")
 
 java_export(
     name = "app",
     srcs = ["src/main/java/com/example/EntryPoint.java"],
-    data = glob(["src/main/resources/**"]),
     maven_coordinates = "com.example.vinnybod:app:0.0.1",
-    prepend_services = "//:LICENSE",
-    resources = glob(["src/main/resources/**"]) + [
-        "//:COPYRIGHT",
-        "//:LICENSE",
-    ],
+    resources = glob(["src/main/resources/**"]),
+    #    runtime_deps = [
+    #        "@maven//:io_netty_netty_tcnative_boringssl_static",
+    #        "@maven//:io_netty_netty_tcnative_boringssl_static_linux_aarch_64",
+    #        "@maven//:io_netty_netty_tcnative_boringssl_static_linux_x86_64",
+    #        "@maven//:io_netty_netty_tcnative_boringssl_static_osx_aarch_64",
+    #        "@maven//:io_netty_netty_tcnative_boringssl_static_osx_x86_64",
+    #        "@maven//:io_netty_netty_tcnative_boringssl_static_windows_x86_64",
+    #    ],
     deps = [
-        "//lib",
+        "@maven//:io_netty_netty_tcnative_boringssl_static",
+        "@maven//:io_netty_netty_tcnative_boringssl_static_linux_aarch_64",
+        "@maven//:io_netty_netty_tcnative_boringssl_static_linux_x86_64",
+        "@maven//:io_netty_netty_tcnative_boringssl_static_osx_aarch_64",
+        "@maven//:io_netty_netty_tcnative_boringssl_static_osx_x86_64",
+        "@maven//:io_netty_netty_tcnative_boringssl_static_windows_x86_64",
     ],
 )

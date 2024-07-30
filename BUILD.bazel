@@ -1,8 +1,0 @@
-exports_files(
-    [
-        "LICENSE",
-        "COPYRIGHT",
-        "NOTICE",
-    ],
-    visibility = ["//visibility:public"],
-)
