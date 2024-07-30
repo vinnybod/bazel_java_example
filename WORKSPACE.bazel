@@ -5,19 +5,18 @@ RULES_JVM_EXTERNAL_TAG = "6.2"
 
 RULES_JVM_EXTERNAL_SHA = "808cb5c30b5f70d12a2a745a29edc46728fd35fa195c1762a596b63ae9cebe05"
 
-#
-#http_archive(
-#    name = "rules_jvm_external",
-#    sha256 = RULES_JVM_EXTERNAL_SHA,
-#    strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
-#    url = "https://github.com/bazelbuild/rules_jvm_external/releases/download/%s/rules_jvm_external-%s.tar.gz" % (RULES_JVM_EXTERNAL_TAG, RULES_JVM_EXTERNAL_TAG),
-#)
-
-git_repository(
+http_archive(
     name = "rules_jvm_external",
-    commit = "11705c39f595cc2d8bc8994f4fda5cb45fd5f81a",
-    remote = "https://github.com/vinnybod/rules_jvm_external.git",
+    sha256 = RULES_JVM_EXTERNAL_SHA,
+    strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
+    url = "https://github.com/bazelbuild/rules_jvm_external/releases/download/%s/rules_jvm_external-%s.tar.gz" % (RULES_JVM_EXTERNAL_TAG, RULES_JVM_EXTERNAL_TAG),
 )
+
+#git_repository(
+#    name = "rules_jvm_external",
+#    commit = "11705c39f595cc2d8bc8994f4fda5cb45fd5f81a",
+#    remote = "https://github.com/vinnybod/rules_jvm_external.git",
+#)
 
 load("@rules_jvm_external//:repositories.bzl", "rules_jvm_external_deps")
 
