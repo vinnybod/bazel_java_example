@@ -1,0 +1,14 @@
+exports_files([
+    "README.md",
+    ".scalafmt.conf",
+])
+
+alias(
+    name = "format",
+    actual = "//tools/format",
+)
+
+alias(
+    name = "format_test",
+    actual = "//tools/format:format_test",
+)
