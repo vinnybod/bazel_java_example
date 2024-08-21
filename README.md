@@ -1,4 +1,4 @@
-## Bazel Java Example - classifier missing from generated pom.xml
+## Bazel Java Example - scalafmt include/exclude paths not working
 
 ## Background
 
