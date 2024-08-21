@@ -11,7 +11,7 @@ java_binary(
 format_multirun(
     name = "format",
     scala = ":scalafmt",
-    visibility = ["//:__subpackages__"],
+    visibility = ["//visibility:public"],
 )
 
 format_test(
@@ -19,6 +19,5 @@ format_test(
     size = "small",
     no_sandbox = True,  # Enables formatting the entire workspace, paired with 'workspace' attribute
     scala = ":scalafmt",
-    visibility = ["//:__subpackages__"],
     workspace = "//:README.md",  # A file in the workspace root, where the no_sandbox mode will run the formatter
 )
