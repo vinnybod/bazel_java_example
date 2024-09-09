@@ -4,11 +4,24 @@ RULES_JVM_EXTERNAL_TAG = "6.0"
 
 RULES_JVM_EXTERNAL_SHA = "85fd6bad58ac76cc3a27c8e051e4255ff9ccd8c92ba879670d195622e7c0a9b7"
 
-http_archive(
+#http_archive(
+#    name = "rules_jvm_external",
+#    sha256 = RULES_JVM_EXTERNAL_SHA,
+#    strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
+#    url = "https://github.com/bazelbuild/rules_jvm_external/releases/download/%s/rules_jvm_external-%s.tar.gz" % (RULES_JVM_EXTERNAL_TAG, RULES_JVM_EXTERNAL_TAG),
+#)
+
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+
+#git_repository(
+#    name = "rules_jvm_external",
+#    commit = "5ec27150ced4eb331668009aabea7dd5176bd01f",
+#    remote = "https://github.com/confluentinc/rules_jvm_external.git",
+#)
+
+local_repository(
     name = "rules_jvm_external",
-    sha256 = RULES_JVM_EXTERNAL_SHA,
-    strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
-    url = "https://github.com/bazelbuild/rules_jvm_external/releases/download/%s/rules_jvm_external-%s.tar.gz" % (RULES_JVM_EXTERNAL_TAG, RULES_JVM_EXTERNAL_TAG),
+    path = "/Users/vrose/dev/confluentinc/rules_jvm_external",
 )
 
 load("@rules_jvm_external//:repositories.bzl", "rules_jvm_external_deps")
@@ -18,6 +31,8 @@ rules_jvm_external_deps()
 load("@rules_jvm_external//:setup.bzl", "rules_jvm_external_setup")
 
 rules_jvm_external_setup()
+
+load("@rules_jvm_external//:specs.bzl", "maven")
 
 http_archive(
     name = "contrib_rules_jvm",
@@ -45,11 +60,17 @@ load("@rules_jvm_external//:defs.bzl", "maven_install")
 maven_install(
     artifacts = [
         "com.puppycrawl.tools:checkstyle:8.36.2",
-        "org.junit.jupiter:junit-jupiter-api:5.10.0",
+        maven.artifact(
+            artifact = "junit-jupiter-api",
+            group = "org.junit.jupiter",
+            neverlink = True,
+            version = "5.10.0",
+        ),
         "org.junit.jupiter:junit-jupiter-engine:5.10.0",
         "org.junit.platform:junit-platform-launcher:1.10.0",
         "org.junit.platform:junit-platform-reporting:1.10.0",
         "org.junit.vintage:junit-vintage-engine:5.10.0",
+        "com.google.guava:guava:30.1-jre",
     ],
     repositories = [
         "https://repo.maven.apache.org/maven2/",

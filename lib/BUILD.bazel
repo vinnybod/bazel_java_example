@@ -1,23 +1,38 @@
 load("@contrib_rules_jvm//java:defs.bzl", "java_export", "java_library")
 
-java_export(
+java_library(
     name = "lib",
-    srcs = ["src/main/java/com/example/Library.java"],
-    maven_coordinates = "com.example.vinnybod:library:0.0.1",
-    resources = glob(["src/main/resources/**"]) + [
-        "//:COPYRIGHT",
-        #        "//:LICENSE",
+    srcs = ["src/main/java/com/library/Library.java"],
+    neverlink = True,
+    tags = [
+        "maven:compile-only",
+        #        "maven_coordinates=com.example.vinnybod:lib:0.0.1",
     ],
     visibility = ["//visibility:public"],
+    #    exports = [
+    #        "@maven//:org_junit_jupiter_junit_jupiter_api",
+    #        # Not a neverlink dep.
+    #        "@maven//:com_google_guava_guava",
+    #        #        ":another_lib",
+    #    ],
+    deps = [
+        # This is a neverlink dep.
+        "@maven//:org_junit_jupiter_junit_jupiter_api",
+        # Not a neverlink dep.
+        "@maven//:com_google_guava_guava",
+        #        ":another_lib",
+    ],
 )
 
-# Swap this in to see the difference in behavior.
 #java_library(
-#    name = "lib",
-#    srcs = ["src/main/java/com/example/Library.java"],
-#    resources = glob(["src/main/resources/**"]) + [
-#        "//:COPYRIGHT",
-#        #        "//:LICENSE",
+#    name = "another_lib",
+#    srcs = ["src/main/java/com/library/AnotherLibrary.java"],
+#    neverlink = True,
+#    tags = ["maven:compile-only"],
+#    deps = [
+#        # This is a neverlink dep.
+#        "@maven//:org_junit_jupiter_junit_jupiter_api",
+#        # Not a neverlink dep.
+#        "@maven//:com_google_guava_guava",
 #    ],
-#    visibility = ["//visibility:public"],
 #)

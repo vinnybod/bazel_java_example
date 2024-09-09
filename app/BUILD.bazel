@@ -5,10 +5,6 @@ java_export(
     srcs = ["src/main/java/com/example/EntryPoint.java"],
     data = glob(["src/main/resources/**"]),
     maven_coordinates = "com.example.vinnybod:app:0.0.1",
-    resources = glob(["src/main/resources/**"]) + [
-        "//:COPYRIGHT",
-        "//:LICENSE",
-    ],
     deps = [
         "//lib",
     ],
