@@ -5,7 +5,7 @@ java_library(
     srcs = ["src/main/java/com/library/CompileOnlyLibrary.java"],
     neverlink = True,
     tags = [
-        #        "maven:compile-only",
+        "maven:compile-only",
         "maven_coordinates=com.example.vinnybod:compile-lib:0.0.1",
     ],
     visibility = ["//visibility:public"],
