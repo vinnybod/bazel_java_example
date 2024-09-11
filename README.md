@@ -8,6 +8,12 @@ It imports a `neverlink` (compile-only) dependency, which causes the `javadoc` r
 From what I can tell, the `app-project-src.jar` is including the source files from the dependency, 
 when it should only include the source files from the app itself.
 
+```mermaid
+graph TD
+    A[app] -->|neverlink| B[compile_only_lib]
+    A -->C[lib]
+```
+
 ## Reproduction
 
 First build the repo using `bazel build //...`
