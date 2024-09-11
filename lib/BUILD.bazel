@@ -1,38 +1,29 @@
 load("@contrib_rules_jvm//java:defs.bzl", "java_export", "java_library")
 
 java_library(
-    name = "lib",
-    srcs = ["src/main/java/com/library/Library.java"],
+    name = "compile_only_lib",
+    srcs = ["src/main/java/com/library/CompileOnlyLibrary.java"],
     neverlink = True,
     tags = [
-        "maven:compile-only",
-        #        "maven_coordinates=com.example.vinnybod:lib:0.0.1",
+        #        "maven:compile-only",
+        "maven_coordinates=com.example.vinnybod:compile-lib:0.0.1",
     ],
     visibility = ["//visibility:public"],
-    #    exports = [
-    #        "@maven//:org_junit_jupiter_junit_jupiter_api",
-    #        # Not a neverlink dep.
-    #        "@maven//:com_google_guava_guava",
-    #        #        ":another_lib",
-    #    ],
     deps = [
         # This is a neverlink dep.
         "@maven//:org_junit_jupiter_junit_jupiter_api",
         # Not a neverlink dep.
         "@maven//:com_google_guava_guava",
-        #        ":another_lib",
     ],
 )
 
-#java_library(
-#    name = "another_lib",
-#    srcs = ["src/main/java/com/library/AnotherLibrary.java"],
-#    neverlink = True,
-#    tags = ["maven:compile-only"],
-#    deps = [
-#        # This is a neverlink dep.
-#        "@maven//:org_junit_jupiter_junit_jupiter_api",
-#        # Not a neverlink dep.
-#        "@maven//:com_google_guava_guava",
-#    ],
-#)
+java_library(
+    name = "lib",
+    srcs = ["src/main/java/com/library/Library.java"],
+    tags = [
+        "maven_coordinates=com.example.vinnybod:lib:0.0.1",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+    ],
+)

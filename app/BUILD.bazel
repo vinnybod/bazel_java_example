@@ -7,5 +7,6 @@ java_export(
     maven_coordinates = "com.example.vinnybod:app:0.0.1",
     deps = [
         "//lib",
+        "//lib:compile_only_lib",
     ],
 )

@@ -1,0 +1,2 @@
+common --noenable_bzlmod
+common --remote_download_all
