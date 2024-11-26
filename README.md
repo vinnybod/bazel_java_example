@@ -63,3 +63,19 @@ However, then `pom.xml` will then include the `compile_only_lib` as a dependency
 ## Expected Behavior
 
 The `app-project-src.jar` should only include the source files from the app itself, and not the dependencies.
+
+## Solution
+
+Uncomment the patch in `WORKSPACE.bazel` to test the fix.
+
+#### TL;DR
+* MavenInfo sorts the dependencies into two categories: `dep_info` and `artifact_info`
+  * If a dependency has `MavenInfo.coordinates` set, it goes into `dep_info`
+    * The `dep_info` list is what is used to determine the dependencies in the `pom.xml`
+  * If the dependency does not have `MavenInfo.coordinates` set, it goes into `artifact_info`
+    * The `artifact_info` list is used to generate the `sources` jar and `javadoc` jar
+  * If the dependency has `maven:compile-only` tag, it goes into `artifact_info`
+    * This is where the issue is. A `compile-only` dep should not be included in the artifact, it should still be treated as an external maven dep (`dep_info`)
+
+* The patch changes the behavior for `compile-only` deps to be excluded from `artifact_info` and `dep_info`
+* The compile only dep shouldn't end up in the pom.xml or the sources/javadoc jar

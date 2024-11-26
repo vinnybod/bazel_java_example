@@ -6,6 +6,13 @@ RULES_JVM_EXTERNAL_SHA = "808cb5c30b5f70d12a2a745a29edc46728fd35fa195c1762a596b6
 
 http_archive(
     name = "rules_jvm_external",
+    # Uncomment this for fix.
+    #    patch_args = [
+    #        "-p1",
+    #    ],
+    #    patches = [
+    #        "//:fix.patch",
+    #    ],
     sha256 = RULES_JVM_EXTERNAL_SHA,
     strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
     url = "https://github.com/bazelbuild/rules_jvm_external/releases/download/%s/rules_jvm_external-%s.tar.gz" % (RULES_JVM_EXTERNAL_TAG, RULES_JVM_EXTERNAL_TAG),
